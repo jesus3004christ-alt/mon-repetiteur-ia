@@ -1,4 +1,3 @@
-a
 import { subjects } from "@/lib/subjects";
 import { notFound } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -7,12 +6,11 @@ import { ProblemGenerator } from "@/components/app/ProblemGenerator";
 import { InteractiveQA } from "@/components/app/InteractiveQA";
 import { InteractiveQuiz } from "@/components/app/InteractiveQuiz";
 
-// Correction du type pour les props de la page
-interface SubjectPageProps {
-  params: { 
-    subject: string; 
-  };
-}
+// Définition plus robuste des props pour la page afin de corriger l'erreur de build
+type SubjectPageProps = {
+  params: { subject: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
 
 export default function SubjectPage({ params }: SubjectPageProps) {
   const subject = subjects.find((s) => s.slug === params.subject);
@@ -44,7 +42,7 @@ export default function SubjectPage({ params }: SubjectPageProps) {
         </TabsList>
         <TabsContent value="summary" className="mt-6">
           <LessonSummarizer subjectName={subject.name} />
-        </Tabs-content>
+        </TabsContent>
         <TabsContent value="exercise" className="mt-6">
           <ProblemGenerator subjectName={subject.name} />
         </TabsContent>
