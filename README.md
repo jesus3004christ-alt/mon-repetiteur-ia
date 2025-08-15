@@ -1,2 +1,5 @@
-# mon-repetiteur-ia
-Application de répétiteur IA pour la Première G1
+# Firebase Studio
+
+This is a NextJS starter in Firebase Studio.
+
+To get started, take a look at src/app/page.tsx.
