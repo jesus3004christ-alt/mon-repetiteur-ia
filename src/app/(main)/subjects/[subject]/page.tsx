@@ -2,8 +2,16 @@ import { subjects } from "@/lib/subjects";
 import { notFound } from "next/navigation";
 import { SubjectPageContent } from "@/components/app/SubjectPageContent";
 
-export default function SubjectPage({ params }: { params: { subject: string } }) {
-  const subject = subjects.find((s) => s.slug === params.subject);
+// Correction du type pour les props de la page pour Next.js 15+
+type SubjectPageProps = {
+  params: Promise<{ 
+    subject: string; 
+  }>;
+};
+
+export default async function SubjectPage({ params }: SubjectPageProps) {
+  const { subject: subjectSlug } = await params;
+  const subject = subjects.find((s) => s.slug === subjectSlug);
 
   if (!subject) {
     notFound();
