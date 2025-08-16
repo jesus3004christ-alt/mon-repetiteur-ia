@@ -1,19 +1,12 @@
-"use client";
-
 import { subjects } from "@/lib/subjects";
 import { notFound } from "next/navigation";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LessonSummarizer } from "@/components/app/LessonSummarizer";
-import { ProblemGenerator } from "@/components/app/ProblemGenerator";
-import { InteractiveQA } from "@/components/app/InteractiveQA";
-import { InteractiveQuiz } from "@/components/app/InteractiveQuiz";
+import { SubjectPageContent } from "@/components/app/SubjectPageContent";
 
 // Correction du type pour les props de la page
 type SubjectPageProps = {
   params: { 
     subject: string; 
   };
-  // searchParams: { [key: string]: string | string[] | undefined }; // Keep this commented out or removed if not used
 };
 
 export default function SubjectPage({ params }: SubjectPageProps) {
@@ -37,26 +30,8 @@ export default function SubjectPage({ params }: SubjectPageProps) {
         </div>
       </header>
 
-      <Tabs defaultValue="summary" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 md:w-[500px]">
-          <TabsTrigger value="summary">Résumé</TabsTrigger>
-          <TabsTrigger value="exercise">Exercice</TabsTrigger>
-          <TabsTrigger value="qa">Questions</TabsTrigger>
-          <TabsTrigger value="quiz">Quiz</TabsTrigger>
-        </TabsList>
-        <TabsContent value="summary" className="mt-6">
-          <LessonSummarizer subjectName={subject.name} />
-        </TabsContent>
-        <TabsContent value="exercise" className="mt-6">
-          <ProblemGenerator subjectName={subject.name} />
-        </TabsContent>
-        <TabsContent value="qa" className="mt-6">
-          <InteractiveQA subjectName={subject.name} />
-        </TabsContent>
-        <TabsContent value="quiz" className="mt-6">
-          <InteractiveQuiz subjectName={subject.name} />
-        </TabsContent>
-      </Tabs>
+      {/* Rendu du composant client qui contient les onglets et l'interactivité */}
+      <SubjectPageContent subjectName={subject.name} />
     </div>
   );
 }
