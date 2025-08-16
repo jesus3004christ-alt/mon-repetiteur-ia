@@ -1,3 +1,5 @@
+"use client";
+
 import { subjects } from "@/lib/subjects";
 import { notFound } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -6,10 +8,12 @@ import { ProblemGenerator } from "@/components/app/ProblemGenerator";
 import { InteractiveQA } from "@/components/app/InteractiveQA";
 import { InteractiveQuiz } from "@/components/app/InteractiveQuiz";
 
-// Définition plus robuste des props pour la page afin de corriger l'erreur de build
+// Correction du type pour les props de la page
 type SubjectPageProps = {
-  params: { subject: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  params: { 
+    subject: string; 
+  };
+  // searchParams: { [key: string]: string | string[] | undefined }; // Keep this commented out or removed if not used
 };
 
 export default function SubjectPage({ params }: SubjectPageProps) {
