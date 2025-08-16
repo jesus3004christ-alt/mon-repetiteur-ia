@@ -2,14 +2,7 @@ import { subjects } from "@/lib/subjects";
 import { notFound } from "next/navigation";
 import { SubjectPageContent } from "@/components/app/SubjectPageContent";
 
-// Correction du type pour les props de la page
-type SubjectPageProps = {
-  params: { 
-    subject: string; 
-  };
-};
-
-export default function SubjectPage({ params }: SubjectPageProps) {
+export default function SubjectPage({ params }: { params: { subject: string } }) {
   const subject = subjects.find((s) => s.slug === params.subject);
 
   if (!subject) {
