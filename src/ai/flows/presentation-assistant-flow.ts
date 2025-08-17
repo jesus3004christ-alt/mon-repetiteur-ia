@@ -1,6 +1,6 @@
 'use server';
 
-import { Flow as flow } from 'genkit';
+import { Flow } from 'genkit'; // Changement ici: Flow avec F majuscule
 import { z } from 'zod';
 import { ai } from '../genkit';
 
@@ -18,7 +18,7 @@ const PresentationPlanSchema = z.object({
   sources: z.string().describe("Quelques pistes ou types de sources où l'élève peut chercher des informations (ex: 'Manuels scolaires d'économie', 'Articles de presse spécialisée', 'Sites institutionnels')."),
 });
 
-export const presentationAssistanceFlow = flow(
+export const presentationAssistanceFlow = Flow( // Utilisation de Flow avec F majuscule
   {
     name: 'presentationAssistanceFlow',
     inputSchema: z.object({
