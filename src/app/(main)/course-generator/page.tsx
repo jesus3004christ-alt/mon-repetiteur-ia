@@ -30,10 +30,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from '@/hooks/use-toast';
 import { subjects } from '@/lib/subjects';
-import { courseGenerationFlow } from '@/ai/flows/course-generation-flow';
 import ReactMarkdown from 'react-markdown';
 import { Skeleton } from '@/components/ui/skeleton';
 import jsPDF from 'jspdf';
+import 'jspdf/dist/polyfills.js';
+import { generateCourseAction } from '@/lib/actions'; // MODIFIÉ: Importe l'action serveur
 
 const formSchema = z.object({
   subject: z.string().min(1, "Veuillez sélectionner une matière."),
@@ -59,7 +60,8 @@ export default function CourseGeneratorPage() {
     setError(null);
     setGeneratedCourse("");
     try {
-      const courseMarkdown = await courseGenerationFlow({ subject: values.subject, chapter: values.chapter });
+      // MODIFIÉ: Appelle l'action serveur au lieu du flow direct
+      const courseMarkdown = await generateCourseAction(values); 
       setGeneratedCourse(courseMarkdown);
       toast({ title: 'Cours généré !', description: 'Votre cours est prêt.' });
     } catch (e: any) {
@@ -75,8 +77,6 @@ export default function CourseGeneratorPage() {
     if (!generatedCourse) return;
     const doc = new jsPDF();
     
-    // Pour une meilleure gestion du Markdown, nous allons le convertir en texte simple pour le PDF.
-    // Une solution plus avancée utiliserait html2canvas, mais restons simples pour le moment.
     const textContent = generatedCourse
         .replace(/#/g, '')
         .replace(/\*/g, '')

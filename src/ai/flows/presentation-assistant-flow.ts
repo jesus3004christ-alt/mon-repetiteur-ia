@@ -1,6 +1,6 @@
 'use server';
 
-import { Flow } from 'genkit'; // Changement ici: Flow avec F majuscule
+import { Flow } from 'genkit';
 import { z } from 'zod';
 import { ai } from '../genkit';
 
@@ -14,11 +14,11 @@ const PresentationPlanSchema = z.object({
       subparts: z.array(z.string()).describe("Les sous-parties ou idées à développer dans cette partie."),
     })
   ).describe("Le plan détaillé de l'exposé en 2 ou 3 grandes parties."),
-  conclusion: z.string().describe("Un paragraphe de conclusion qui récapitule les points clés et ouvre sur une nouvelle question."),
+  conclusion: z.string().describe("Un paragraphe de conclusion qui résume les points clés et ouvre sur une nouvelle question."),
   sources: z.string().describe("Quelques pistes ou types de sources où l'élève peut chercher des informations (ex: 'Manuels scolaires d'économie', 'Articles de presse spécialisée', 'Sites institutionnels')."),
 });
 
-export const presentationAssistanceFlow = Flow( // Utilisation de Flow avec F majuscule
+export const presentationAssistanceFlow = Flow(
   {
     name: 'presentationAssistanceFlow',
     inputSchema: z.object({

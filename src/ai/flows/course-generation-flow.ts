@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { ai } from '../genkit';
-import { Flow } from 'genkit'; // Changement ici: Flow avec F majuscule
+import { Flow } from 'genkit';
 
 // Schéma de la réponse attendue de l'IA
 const CourseSchema = z.object({
@@ -29,7 +29,7 @@ const CourseSchema = z.object({
 });
 
 
-export const courseGenerationFlow = Flow( // Utilisation de Flow avec F majuscule
+export const courseGenerationFlow = Flow(
   {
     name: 'courseGenerationFlow',
     inputSchema: z.object({
