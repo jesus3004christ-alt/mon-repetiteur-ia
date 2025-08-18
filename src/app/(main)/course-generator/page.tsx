@@ -34,6 +34,7 @@ import { generateCourseAction } from '@/lib/actions';
 import ReactMarkdown from 'react-markdown';
 import { Skeleton } from '@/components/ui/skeleton';
 import jsPDF from 'jspdf';
+// import 'jspdf/dist/polyfills.js'; // LIGNE SUPPRIMÉE
 
 const formSchema = z.object({
   subject: z.string().min(1, "Veuillez sélectionner une matière."),
