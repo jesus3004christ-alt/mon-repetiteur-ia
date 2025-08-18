@@ -1,4 +1,4 @@
-"use client";
+st"use client";
 
 import { useState } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -30,11 +30,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from '@/hooks/use-toast';
 import { subjects } from '@/lib/subjects';
+import { generateCourseAction } from '@/lib/actions';
 import ReactMarkdown from 'react-markdown';
 import { Skeleton } from '@/components/ui/skeleton';
 import jsPDF from 'jspdf';
-import 'jspdf/dist/polyfills.js';
-import { generateCourseAction } from '@/lib/actions'; // MODIFIÉ: Importe l'action serveur
+// import 'jspdf/dist/polyfills.js'; // LIGNE SUPPRIMÉE
 
 const formSchema = z.object({
   subject: z.string().min(1, "Veuillez sélectionner une matière."),
@@ -60,7 +60,6 @@ export default function CourseGeneratorPage() {
     setError(null);
     setGeneratedCourse("");
     try {
-      // MODIFIÉ: Appelle l'action serveur au lieu du flow direct
       const courseMarkdown = await generateCourseAction(values); 
       setGeneratedCourse(courseMarkdown);
       toast({ title: 'Cours généré !', description: 'Votre cours est prêt.' });
