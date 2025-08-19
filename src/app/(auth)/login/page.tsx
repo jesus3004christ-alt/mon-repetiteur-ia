@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import {
   Card,
@@ -38,6 +38,7 @@ const FormSchema = z.object({
 });
 
 export default function LoginPage() {
+  const { toast } = useToast();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -57,9 +58,10 @@ export default function LoginPage() {
       });
       router.push("/dashboard");
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Une erreur inconnue est survenue.";
       toast({
         title: "Échec de la connexion",
-        description: error.message,
+        description: errorMessage,
         variant: "destructive",
       });
     }
