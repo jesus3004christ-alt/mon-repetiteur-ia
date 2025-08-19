@@ -120,9 +120,11 @@ export default function CourseGeneratorPage() {
             </div>
           </CardHeader>
           <CardContent>
-            <ReactMarkdown className="prose dark:prose-invert max-w-none">
-              {generatedCourse}
-            </ReactMarkdown>
+            <div className="prose dark:prose-invert max-w-none">
+              <ReactMarkdown>
+                {generatedCourse}
+              </ReactMarkdown>
+            </div>
           </CardContent>
         </Card>
       )}
