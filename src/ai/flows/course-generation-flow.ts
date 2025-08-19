@@ -1,6 +1,8 @@
+'use server';
+
 import { z } from 'zod';
 import { ai } from '../genkit';
-import { Flow } from 'genkit'; // Changement ici: Flow avec F majuscule
+import { googleAI } from '@genkit-ai/googleai';
 
 // Schéma de la réponse attendue de l'IA
 const CourseSchema = z.object({
@@ -29,7 +31,7 @@ const CourseSchema = z.object({
 });
 
 
-export const courseGenerationFlow = Flow( // Utilisation de Flow avec F majuscule
+export const courseGenerationFlow = ai.defineFlow(
   {
     name: 'courseGenerationFlow',
     inputSchema: z.object({
@@ -85,12 +87,12 @@ export const courseGenerationFlow = Flow( // Utilisation de Flow avec F majuscul
 
     const llmResponse = await ai.generate({
       prompt: prompt,
-      model: 'gemini-1.5-flash',
+      model: googleAI.model('gemini-1.5-flash-latest'),
       output: {
         format: 'text', // Demande une sortie en texte brut (Markdown)
       },
     });
 
-    return llmResponse.text();
+    return llmResponse.text;
   }
 );

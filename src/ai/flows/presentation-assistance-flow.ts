@@ -15,9 +15,11 @@ const PresentationPlanSchema = z.object({
       subparts: z.array(z.string()).describe("Les sous-parties ou idées à développer dans cette partie."),
     })
   ).describe("Le plan détaillé de l'exposé en 2 ou 3 grandes parties."),
-  conclusion: z.string().describe("Un paragraphe de conclusion qui résume les points clés et ouvre sur une nouvelle question."),
+  conclusion: z.string().describe("Un paragraphe de conclusion qui récapitule les points clés et ouvre sur une nouvelle question."),
   sources: z.string().describe("Quelques pistes ou types de sources où l'élève peut chercher des informations (ex: 'Manuels scolaires d'économie', 'Articles de presse spécialisée', 'Sites institutionnels')."),
 });
+
+export type PresentationPlan = z.infer<typeof PresentationPlanSchema>;
 
 export const presentationAssistanceFlow = ai.defineFlow(
   {
@@ -48,7 +50,7 @@ export const presentationAssistanceFlow = ai.defineFlow(
       Le résultat doit être structuré et directement utilisable par l'élève pour commencer son travail.
     `;
 
-    const llmResponse = await ai.generate({
+    const { output } = await ai.generate({
       prompt: prompt,
       model: googleAI.model('gemini-1.5-flash-latest'),
       output: {
@@ -56,10 +58,10 @@ export const presentationAssistanceFlow = ai.defineFlow(
       },
     });
 
-    if (!llmResponse.output) {
+    if (!output) {
       throw new Error("L'assistant IA n'a pas pu générer de plan.");
     }
     
-    return llmResponse.output;
+    return output;
   }
 );

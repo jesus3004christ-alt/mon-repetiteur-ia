@@ -21,9 +21,12 @@ const nextConfig: NextConfig = {
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {
-      // Ne pas résoudre 'async_hooks' côté client
+      // Ne pas résoudre les modules Node.js côté client
       config.resolve.fallback = {
         ...config.resolve.fallback,
+        fs: false, // Ajouté
+        tls: false, // Ajouté
+        net: false, // Ajouté
         async_hooks: false,
       };
     }

@@ -31,24 +31,14 @@ import { Input } from "@/components/ui/input";
 import { useToast } from '@/hooks/use-toast';
 import { subjects } from '@/lib/subjects';
 import { Skeleton } from '@/components/ui/skeleton';
-import { generatePresentationAction } from '@/lib/actions'; // MODIFIÉ: Importe l'action serveur
+import { generatePresentationAction } from '@/lib/actions'; 
+import type { PresentationPlan } from '@/ai/flows/presentation-assistance-flow';
+
 
 const formSchema = z.object({
   subject: z.string().min(1, "Veuillez sélectionner une matière."),
   topic: z.string().min(5, "Veuillez décrire le thème de votre exposé."),
 });
-
-type PresentationPlan = {
-  title: string;
-  introduction: string;
-  problematique: string;
-  plan: {
-    part: string;
-    subparts: string[];
-  }[];
-  conclusion: string;
-  sources: string;
-};
 
 export default function PresentationAssistancePage() {
   const [presentationPlan, setPresentationPlan] = useState<PresentationPlan | null>(null);
@@ -69,7 +59,6 @@ export default function PresentationAssistancePage() {
     setError(null);
     setPresentationPlan(null);
     try {
-      // MODIFIÉ: Appelle l'action serveur au lieu du flow direct
       const result = await generatePresentationAction(values); 
       setPresentationPlan(result);
       toast({ title: 'Plan généré !', description: 'Votre proposition d\'exposé est prête.' });

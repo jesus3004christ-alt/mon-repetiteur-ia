@@ -34,7 +34,9 @@ import { generateCourseAction } from '@/lib/actions';
 import ReactMarkdown from 'react-markdown';
 import { Skeleton } from '@/components/ui/skeleton';
 import jsPDF from 'jspdf';
-// import 'jspdf/dist/polyfills.js'; // LIGNE SUPPRIMÉE
+import { saveAs } from 'file-saver';
+import { Document, Packer, Paragraph } from "docx";
+
 
 const formSchema = z.object({
   subject: z.string().min(1, "Veuillez sélectionner une matière."),
@@ -76,15 +78,45 @@ export default function CourseGeneratorPage() {
     if (!generatedCourse) return;
     const doc = new jsPDF();
     
+    // Basic conversion from Markdown to text. This is a simplification.
+    // For complex markdown, a more robust library would be needed.
     const textContent = generatedCourse
-        .replace(/#/g, '')
-        .replace(/\*/g, '')
-        .replace(/>/g, '');
+        .replace(/#+\s/g, '') // Remove headers hashes
+        .replace(/\*\*/g, '') // Remove bold
+        .replace(/\*/g, '') // Remove italic/bullets
+        .replace(/>\s/g, ''); // Remove blockquotes
 
     const lines = doc.splitTextToSize(textContent, 180);
     doc.text(lines, 10, 10);
     doc.save(`cours_${form.getValues('subject')}_${form.getValues('chapter')}.pdf`);
   };
+
+  const handleDownloadWord = async () => {
+    if (!generatedCourse) return;
+
+    // A simple parser to convert markdown to docx paragraphs.
+    const paragraphs = generatedCourse.split('\n').map(line => {
+      // Basic styling, can be expanded
+      if (line.startsWith('# ')) {
+          return new Paragraph({ text: line.substring(2), heading: "Heading1" });
+      }
+      if (line.startsWith('## ')) {
+          return new Paragraph({ text: line.substring(3), heading: "Heading2" });
+      }
+      // Add more rules for lists, bold etc. if needed
+      return new Paragraph(line);
+    });
+
+    const doc = new Document({
+      sections: [{
+        properties: {},
+        children: paragraphs,
+      }],
+    });
+
+    const blob = await Packer.toBlob(doc);
+    saveAs(blob, `cours_${form.getValues('subject')}_${form.getValues('chapter')}.docx`);
+  }
 
   return (
     <div className="space-y-6">
@@ -172,7 +204,10 @@ export default function CourseGeneratorPage() {
         <Card>
           <CardHeader className="flex flex-row justify-between items-center">
             <CardTitle>Votre cours</CardTitle>
-            <Button onClick={handleDownloadPdf} variant="outline">Télécharger en PDF</Button>
+            <div className="flex gap-2">
+              <Button onClick={handleDownloadPdf} variant="outline">PDF</Button>
+              <Button onClick={handleDownloadWord} variant="outline">Word</Button>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="prose dark:prose-invert max-w-none">
